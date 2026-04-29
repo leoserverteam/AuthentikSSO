@@ -18,5 +18,3 @@ jobs:
   call-nginx:
     needs: call-deploy
     uses: leoserverteam/DevOpsTemplates/.github/workflows/deploynginx.yml@main
-    with:
-      project_name: "Authentik"
