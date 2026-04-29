@@ -6,6 +6,19 @@ on:
       - main
 
 jobs:
+
+  prepare-env:
+    runs-on: self-hosted
+    steps:
+      - name: Create .env on server
+        run: |
+          # Путь должен совпадать с тем, что в шаблоне (из vars.DEPLOY_PATH)
+          TARGET_DIR="${{ vars.DEPLOY_PATH }}/Authentik"
+          mkdir -p $TARGET_DIR
+          echo "PG_PASS=${{ secrets.AUTHENTIK_PG_PASS }}" > $TARGET_DIR/.env
+          echo "AUTHENTIK_SECRET_KEY=${{ secrets.AUTHENTIK_SECRET_KEY }}" >> $TARGET_DIR/.env
+          echo "AUTHENTIK_ERROR_REPORTING__ENABLED=true" >> $TARGET_DIR/.env
+
   call-deploy:
     uses: leoserverteam/DevOpsTemplates/.github/workflows/onlycompose.yml@main
     with:
