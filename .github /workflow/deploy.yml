@@ -1,0 +1,22 @@
+name: Deploy Authentik
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-deploy:
+    uses: leoserverteam/DevOpsTemplates/.github/workflows/onlycompose.yml@main
+    with:
+      project_name: "Authentik"
+    secrets:
+      # Прокидываем секреты напрямую, если шаблон их ожидает,
+      # либо они подтянутся через secrets: inherit
+      inherit
+
+  call-nginx:
+    needs: call-deploy
+    uses: leoserverteam/DevOpsTemplates/.github/workflows/deploynginx.yml@main
+    with:
+      project_name: "Authentik"
